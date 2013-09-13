@@ -58,5 +58,6 @@ Other bundled protocols include MongoDB, Riak, and Redis client libraries.
         "flask",
         "http-parser >= 0.7.12",
         "dnspython",
+        "palm",
     ] + additional_requires),
     )
