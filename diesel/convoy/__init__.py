@@ -8,7 +8,7 @@ from functools import partial
 
 from diesel import quickstart, Thunk, sleep, log, fork
 from diesel.util.queue import Queue, first
-from diesel.logmod import LOGLVL_DEBUG
+from diesel.logmod import levels
 
 from .convoy_env_palm import MessageResponse, MessageEnvelope
 from .consensus.server import run_server as run_consensus_server
@@ -100,7 +100,9 @@ class Convoy(object):
     def __call__(self):
         assert me.id
         should_process = self.roles
-        rlog = log.sublog("convoy-resolver", LOGLVL_DEBUG)
+        rlog = log.name("convoy-resolver")
+        rlog.min_level = levels.DEBUG
+        rlog.debug("Convoy.__call__")
         while True:
             for r in should_process:
                 if r in self.roles_wanted:

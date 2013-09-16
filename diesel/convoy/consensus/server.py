@@ -10,7 +10,7 @@ from diesel import (until_eol, send, log,
         quickstart, Service, first, fork, 
         Client, ClientConnectionError, call, sleep,
         Thunk)
-from diesel.logmod import LOGLVL_DEBUG
+from diesel.logmod import levels
 from diesel.util.event import Event
 from diesel.util.queue import Queue
 
@@ -35,8 +35,10 @@ idgen = lamport_id()
 def init_group(hostconfig):
     global clog
     global group
-    clog = log.sublog("consensus-server", LOGLVL_DEBUG)
+    clog = log.name("consensus-server")
+    clog.min_level = levels.DEBUG
     group = HostGroup(hostconfig)
+    clog.debug("Initialized HostGroup with hostconfig = %r" % (hostconfig,))
 
 class StoredValue(object):
     def __init__(self, v, proposal_id):
