@@ -14,6 +14,11 @@ if (os.environ.get('DIESEL_LIBEV') or
     not hasattr(select, 'epoll')):
     additional_requires.append('pyev')
 
+if sys.version_info > (3, ):
+    additional_requires.append('dnspython3')
+else:
+    additional_requires.append('dnspython')
+
 VERSION = "3.0.22"
 
 setup(name="diesel",
@@ -62,6 +67,5 @@ Other bundled protocols include MongoDB, Riak, and Redis client libraries.
         "pyopenssl",
         "flask",
         "http-parser >= 0.7.12",
-        "dnspython",
     ] + additional_requires),
     )
