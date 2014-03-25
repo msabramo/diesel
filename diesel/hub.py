@@ -17,12 +17,12 @@ else:
 import errno
 import fcntl
 import os
-import thread
+from six.moves import _thread
 
 from collections import deque, defaultdict
 from operator import attrgetter
 from time import time
-from Queue import Queue, Empty
+from six.moves.queue import Queue, Empty
 
 TRIGGER_COMPARE = attrgetter('trigger_time')
 
@@ -117,7 +117,7 @@ class AbstractEventHub(object):
         def wrap():
             try:
                 res = f(*args, **kw)
-            except Exception, e:
+            except Exception as e:
                 self.thread_comp_in.put((reschedule, e))
             else:
                 self.thread_comp_in.put((reschedule, res))
@@ -270,7 +270,7 @@ class EPollEventHub(AbstractEventHub):
 
                 if not self.run:
                     return
-        except IOError, e:
+        except IOError as e:
             if e.errno == errno.EINTR:
                 pass
             else:

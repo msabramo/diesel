@@ -3,14 +3,18 @@
 strings or files.
 '''
 try:
-    import cStringIO
+    from io import BytesIO
 except ImportError:
-    raise ImportError, "cStringIO is required"
+    try:
+        from cStringIO import StringIO as BytesIO
+    except ImportError:
+        raise ImportError("cStringIO is required")
 
 from bisect import bisect_right
 
-_obj_SIO = cStringIO.StringIO
-_type_SIO = cStringIO.OutputType
+_obj_SIO = BytesIO
+
+
 def make_SIO(d):
     t = _obj_SIO()
     t.write(d)

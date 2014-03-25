@@ -137,7 +137,7 @@ class call(object):
                 r = self.f(self.client, *args, **kw)
             finally:
                 current_loop.connection_stack.pop()
-        except ConnectionClosed, e:
+        except ConnectionClosed as e:
             raise ClientConnectionClosed(str(e), addr=self.client.addr, port=self.client.port)
         return r
 
@@ -373,7 +373,7 @@ class Loop(object):
             except socket.error:
                 try:
                     d = sock.recv(1)
-                except socket.error, e:
+                except socket.error as e:
                     if e.errno == errno.ECONNREFUSED:
                         d = ''
                     else:
@@ -605,7 +605,7 @@ class Connection(object):
             else:
                 try:
                     bsent = self.sock.send(data)
-                except socket.error, e:
+                except socket.error as e:
                     code, s = e
                     if code in (errno.EAGAIN, errno.EINTR):
                         self.pipeline.backup(data)
@@ -640,7 +640,7 @@ class Connection(object):
             return
         try:
             data = self.sock.recv(BUFSIZ)
-        except socket.error, e:
+        except socket.error as e:
             code, s = e
             if code in (errno.EAGAIN, errno.EINTR):
                 return
@@ -707,7 +707,7 @@ class UDPSocket(Connection):
             dgram = self.outgoing.popleft()
             try:
                 bsent = self.sock.sendto(dgram, dgram.addr)
-            except socket.error, e:
+            except socket.error as e:
                 code, s = e
                 if code in (errno.EAGAIN, errno.EINTR):
                     self.outgoing.appendleft(dgram)
@@ -737,7 +737,7 @@ class UDPSocket(Connection):
         try:
             data, addr = self.sock.recvfrom(BUFSIZ)
             dgram = Datagram(data, addr)
-        except socket.error, e:
+        except socket.error as e:
             code, s = e
             if code in (errno.EAGAIN, errno.EINTR):
                 return
