@@ -158,7 +158,7 @@ class Loop(object):
         self.keep_alive = False
         self.hub = runtime.current_app.hub
         self.app = runtime.current_app
-        self.id = ids.next()
+        self.id = next(ids)
         self.children = set()
         self.parent = None
         self.deaths = 0
